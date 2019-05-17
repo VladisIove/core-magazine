@@ -1,0 +1,41 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}
+{% if category %}{{ category.name }}{% else %}Products{% endif %}
+{% endblock %}
+{% block content %}
+<h1 class='h2 text-center'>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
+<div class="row">
+	
+	<div class="col-2 offset-1">
+		<ul class="nav flex-column">
+			<li {% if not category %}class="selected"{% endif %}>
+				<p class="h4"><a href="{% url 'shop:product_list' %}">All</a></p>
+			</li>
+			{% for c in categories %}
+			<li {% if category.slug == c.slug %}class="selected"{% endif %}>
+			<p class="h4"><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></p>
+
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+	<div class="col-8 ">
+		<div class="row">
+		{% for product in products %}
+		<div class="card col-4 offset-1" style="width: 18rem;">
+		  <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" class="card-img-top" alt="...">
+		  <div class="card-body">
+		    <h5 class="card-title">{{ product.name }}</h5>
+		    <p class="card-text">${{ product.price }}</p>
+		    <a href="{{ product.get_absolute_url }}" class="btn btn-primary">Go about</a>
+		  </div>
+		</div>
+		{% endfor %}
+		</div>
+	</div>
+</div>
+
+
+
+	{% endblock %}
